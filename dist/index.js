@@ -421,6 +421,7 @@ class TestReporter {
             core.info(summary);
             core.summary.addRaw(`# ${shortSummary}`);
             await core.summary.addRaw(summary).write();
+            core.setOutput('summary', summary);
         }
         else {
             core.info(`Creating check run ${name}`);
@@ -466,7 +467,7 @@ class TestReporter {
             core.info(`Check run HTML: ${resp.data.html_url}`);
             core.setOutput('url', resp.data.url);
             core.setOutput('url_html', resp.data.html_url);
-            core.setOutput('summary', resp.output);
+            core.setOutput('summary', summary);
         }
         return results;
     }
