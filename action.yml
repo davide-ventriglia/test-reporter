@@ -93,6 +93,10 @@ inputs:
     description: GitHub Access Token
     required: false
     default: ${{ github.token }}
+  summary-file:
+    description: 'Opzionale. Se specificato, salva il riepilogo in questo file.'
+    required: false
+    default: summary_raw_md
 outputs:
   conclusion:
     description: |

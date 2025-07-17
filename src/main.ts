@@ -1,6 +1,7 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 import {GitHub} from '@actions/github/lib/utils'
+import * as fs from 'fs'
 
 import {ArtifactProvider} from './input-providers/artifact-provider'
 import {LocalFileProvider} from './input-providers/local-file-provider'
@@ -50,6 +51,7 @@ class TestReporter {
   readonly badgeTitle = core.getInput('badge-title', {required: false})
   readonly reportTitle = core.getInput('report-title', {required: false})
   readonly token = core.getInput('token', {required: true})
+  readonly summaryFile = core.getInput('summary-file', {required: false});
   readonly octokit: InstanceType<typeof GitHub>
   readonly context = getCheckRunContext()
 
@@ -189,6 +191,16 @@ class TestReporter {
       core.info(summary)
       core.summary.addRaw(`# ${shortSummary}`)
       core.setOutput('summary', summary)
+
+      if (this.summaryFile) {
+        try {
+          fs.writeFileSync(this.summaryFile, summary)
+          core.info(`Riepilogo salvato nel file: ${this.summaryFile}`)
+        } catch (error: any) {
+          core.warning(`Impossibile scrivere il file di riepilogo: ${error.message}`)
+        }
+      }
+
       await core.summary.addRaw(summary).write()
     } else {
       core.info(`Creating check run ${name}`)
@@ -239,6 +251,16 @@ class TestReporter {
       core.setOutput('url', resp.data.url)
       core.setOutput('url_html', resp.data.html_url)
       core.setOutput('summary', summary)
+
+      if (this.summaryFile) {
+        try {
+          fs.writeFileSync(this.summaryFile, summary)
+          core.info(`Riepilogo salvato nel file: ${this.summaryFile}`)
+        } catch (error: any) {
+          core.warning(`Impossibile scrivere il file di riepilogo: ${error.message}`)
+        }
+      }
+
     }
 
     return results
