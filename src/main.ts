@@ -237,7 +237,7 @@ class TestReporter {
       core.info(`Check run HTML: ${resp.data.html_url}`)
       core.setOutput('url', resp.data.url)
       core.setOutput('url_html', resp.data.html_url)
-      core.setOutput('summary', resp.output.summary)
+      core.setOutput('summary', resp.output)
     }
 
     return results
