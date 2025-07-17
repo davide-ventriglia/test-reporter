@@ -188,6 +188,7 @@ class TestReporter {
       core.info('Summary content:')
       core.info(summary)
       core.summary.addRaw(`# ${shortSummary}`)
+      core.setOutput('summary', summary)
       await core.summary.addRaw(summary).write()
     } else {
       core.info(`Creating check run ${name}`)
@@ -237,7 +238,7 @@ class TestReporter {
       core.info(`Check run HTML: ${resp.data.html_url}`)
       core.setOutput('url', resp.data.url)
       core.setOutput('url_html', resp.data.html_url)
-      core.setOutput('summary', resp.output)
+      core.setOutput('summary', summary)
     }
 
     return results
